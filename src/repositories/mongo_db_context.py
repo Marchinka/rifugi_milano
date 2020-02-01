@@ -1,12 +1,12 @@
 import pymongo
 
 __mongo_client__ = pymongo.MongoClient(
-    "ds215229.mlab.com:15229",
-    username='room_203_adm',
-    password='room_203_adm',
-    authSource='heroku_pjdmzjmd',
+    "ds215219.mlab.com:15219",
+    username='rifugimilano_adm',
+    password='rifugimilano_adm01',
+    authSource='heroku_98zb5w9j',
     retryWrites=False)
 
-__mongo_db__ = __mongo_client__["heroku_pjdmzjmd"]
+__mongo_db__ = __mongo_client__["heroku_98zb5w9j"]
 
 test_collection = __mongo_db__["test"]
