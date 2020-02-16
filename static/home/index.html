@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rifugi Milano</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://polygit.org/polymer+1.6.0/components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="https://polygit.org/polymer+1.6.0/components/polymer/polymer.html">
+    <link rel="import" href="x-foo.html">
+  </head>
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+<body class="w3-content">
+  <x-foo></x-foo>
+<h1>Rifugi Milano</h1>
+
+<div id="map"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="./../common/common.js"></script>
+<script src="./../common/spot-controller.js"></script>
+<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAm4qIJng6fSNdzcVqepic_kdY8-zQuNto&callback=initMap" async defer></script>
+<script>
+var initMap = function() {
+    RM.mapp.initMap();
+};
+
+spotController.getSpots(function(resp) {
+  resp.forEach(spot => {
+    RM.mapp.addMarker(spot);
+  });
+});
+</script>
+</body>
+</html>

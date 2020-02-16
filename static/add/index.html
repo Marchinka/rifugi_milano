@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<title>Rifugi Milano</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+<body class="w3-content">
+
+<h1>Aggiungi Rifugio</h1>
+<form id="spot-form">
+  <input name="_id" type="hidden" placeholder="_id" />
+  <input name="address" type="text" placeholder="Address" />
+  <input name="lat" type="hidden" placeholder="Latitude" />
+  <input name="lng" type="hidden" placeholder="Longitude" />
+  <input name="name" type="text" placeholder="Name" />
+  <select name="type">
+    <option>Rifugio</option>
+    <option>Vestiti</option>
+    <option>Pasti</option>
+  </select>
+  <textarea name="description" placeholder="Description" ></textarea>
+  <button>Save</button>
+</form>
+
+<div id="map"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="./../common/common.js"></script>
+<script src="./../common/spot-controller.js"></script>
+<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAm4qIJng6fSNdzcVqepic_kdY8-zQuNto&callback=initMap" async defer></script>
+<script>
+var initMap = function() {
+  RM.mapp.initMap();
+};
+
+RM.mapp.onClick(function (e) {
+  $("input[name=lat]").val(e.latLng.lat);
+  $("input[name=lng]").val(e.latLng.lng);
+  $("input[name=address]").val("");
+  RM.mapp.placeTempMarker(e.latLng);
+});
+
+$("#spot-form").on("submit", function(event) {
+  event.preventDefault();
+  var data = RM.utils.serializeForm($(this));
+  data.lat = parseFloat(data.lat);
+  data.lng = parseFloat(data.lng);
+  console.log(data);
+  spotController.saveSpot(data, function(resp) {
+    if (resp.is_valid) {
+      $("input[name=_id]").val(null);
+      $("input[name=address]").val("");
+      $("input[name=lat]").val("");
+      $("input[name=lng]").val("");
+      $("input[name=name]").val("");
+      $("textarea[name=description]").val("");
+      RM.mapp.removeTempMarker();
+    } else {
+      alert(JSON.stringify(resp))
+    }
+  });
+});
+
+var timeoutId = null;
+
+$("input[name=address]").keydown(function(e) {
+  clearTimeout(timeoutId);
+  timeoutId = null;
+
+  timeoutId = setTimeout(function () {
+    var address = e.target.value;
+    RM.mapp.getAddressPosition(address, function(locationResult) {
+      console.log(locationResult);
+      $("input[name=lat]").val(locationResult.location.lat);
+      $("input[name=lng]").val(locationResult.location.lng);
+      RM.mapp.placeTempMarker(locationResult.location);
+    });
+  }, 250);
+});
+
+
+</script>
+</body>
+</html>
