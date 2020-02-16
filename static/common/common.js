@@ -83,7 +83,9 @@ var mapp = (function () {
     };
 
     var removeTempMarker = function () {
-        tempMarker.setMap(null);
+        if (tempMarker) {
+            tempMarker.setMap(null);
+        }
     };
 
     var getAddressPosition = function (address, callback) {

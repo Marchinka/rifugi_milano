@@ -15,8 +15,17 @@ var spotController = (function() {
         });
     };
 
+    var deleteSpot = function(id, callback) {
+        RM.utils.ajax({
+            url: "/spot/" + id, method: "DELETE"
+          }, function (resp) {
+            callback(resp);
+        });
+    };
+
     return {
         getSpots: getSpots,
-        saveSpot: saveSpot
+        saveSpot: saveSpot,
+        deleteSpot: deleteSpot
     };
 })();

@@ -15,28 +15,91 @@
         margin: 0;
         padding: 0;
       }
+
+      #spot-form {
+        margin-bottom: 20px;
+      }
+
+      .field-container {
+        width: 40%;
+        margin-bottom: 10px;
+      }
+
+      .field-container label {
+        text-transform: uppercase;
+        display: block;
+      }
+
+      .field-container input {
+        width: 100%;
+      }
+
+      .field-container textarea {
+        height: 100px;
+        width: 100%;
+      }
+
+      .cont {
+        display: flex;
+        justify-content: space-between;
+        height: 500px;
+      }
+
+      .cont .col {
+        width: 50%;
+        padding: 15px 15px 15px 15px;
+      }
+
+      a {
+        cursor: pointer;
+      }
     </style>
 <body class="w3-content">
+<template id="spot-template">
+  <div>
+    <button type="button" class="delete-spot">&times;</button>&nbsp;
+    <a class="select-spot">
+      <span>{{name}}</span>&nbsp;
+      <span>{{type}}</span>
+    </a>
+  </div>
+</template>
 
 <h1>Aggiungi Rifugio</h1>
 <form id="spot-form">
+  <div class="field-container">
+    <label>Name</label>
+    <input name="name" type="text" placeholder="Name" />
+  </div>
+  <div class="field-container">
+    <label>Address</label>
+    <input name="address" type="text" placeholder="Address" />
+  </div>
+  <div class="field-container">
+    <label>Type</label>
+    <select name="type">
+      <option>Dormitorio</option>
+      <option>Vestiti</option>
+      <option>Pasti</option>
+    </select>
+  </div>
+  <div class="field-container">
+    <label>Description</label>
+    <textarea name="description" placeholder="Description" ></textarea>
+  </div>
   <input name="_id" type="hidden" placeholder="_id" />
-  <input name="address" type="text" placeholder="Address" />
   <input name="lat" type="hidden" placeholder="Latitude" />
   <input name="lng" type="hidden" placeholder="Longitude" />
-  <input name="name" type="text" placeholder="Name" />
-  <select name="type">
-    <option>Rifugio</option>
-    <option>Vestiti</option>
-    <option>Pasti</option>
-  </select>
-  <textarea name="description" placeholder="Description" ></textarea>
   <button>Save</button>
 </form>
 
-<div id="map"></div>
+<div class="cont">
+  <div id="map" class="col"></div>
+  <div id="list" class="col"></div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.js"></script>
 <script src="./../common/common.js"></script>
 <script src="./../common/spot-controller.js"></script>
 <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
@@ -68,6 +131,7 @@ $("#spot-form").on("submit", function(event) {
       $("input[name=name]").val("");
       $("textarea[name=description]").val("");
       RM.mapp.removeTempMarker();
+      refreshList();
     } else {
       alert(JSON.stringify(resp))
     }
@@ -91,7 +155,45 @@ $("input[name=address]").keydown(function(e) {
   }, 250);
 });
 
+var refreshList = function() {
+  var templateHTML = $("#spot-template").html();
+  var $container = $("#list");
+  $container.html("");
+  spotController.getSpots(function(spots) {
+    spots.forEach(spot => {
+      var output = Mustache.render(templateHTML, spot);
+      var $element = $(output);
 
+      $element.on("click", ".select-spot", function(e) {
+        e.preventDefault();
+        loadSpot(spot);
+      });
+
+      $element.on("click", ".delete-spot", function(e) {
+        e.preventDefault();
+        spotController.deleteSpot(spot._id, function() {
+          refreshList();
+        });
+      });
+      $container.append($element);
+    });
+  });
+};
+
+var loadSpot = function(spot) {
+    $("input[name=_id]").val(spot._id);
+    $("input[name=address]").val(spot.address);
+    $("input[name=lat]").val(spot.lat);
+    $("input[name=lng]").val(spot.lng);
+    $("input[name=name]").val(spot.name);
+    $("textarea[name=description]").val(spot.description);
+    
+    RM.mapp.placeTempMarker({
+      lat: spot.lat, lng: spot.lng
+    });
+};
+
+refreshList();
 </script>
 </body>
 </html>
