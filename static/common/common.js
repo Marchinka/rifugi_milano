@@ -111,13 +111,23 @@ var mapp = (function () {
           });
     };
 
+    var clear = function () {
+        markers.forEach(function(m) {
+            if (m) {
+                m.setMap(null);
+            }
+        });
+        markers = [];
+    };
+
     return {
         initMap: initMap,
         onClick: onClick,
         placeTempMarker: placeTempMarker,
         getAddressPosition: getAddressPosition,
         removeTempMarker: removeTempMarker,
-        addMarker: addMarker
+        addMarker: addMarker,
+        clear: clear
     }
 })();
 

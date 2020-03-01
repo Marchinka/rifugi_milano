@@ -30,7 +30,7 @@
         display: block;
       }
 
-      .field-container input {
+      .field-container input[type=text],select {
         width: 100%;
       }
 
@@ -84,6 +84,21 @@
     </select>
   </div>
   <div class="field-container">
+    <label>Age</label>
+    <input name="minAge" type="number" placeholder="Min Age" value="0" />
+    <input name="maxAge" type="number" placeholder="Max Age" value="100"/>
+  </div>
+  <div class="field-container">
+    <label>
+      <input name="male" type="checkbox" checked />
+      Male
+    </label>
+    <label>
+      <input name="female" type="checkbox" checked />
+      Female
+    </label>
+  </div>
+  <div class="field-container">
     <label>Description</label>
     <textarea name="description" placeholder="Description" ></textarea>
   </div>
@@ -100,8 +115,8 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.js"></script>
-<script src="./../common/common.js"></script>
-<script src="./../common/spot-controller.js"></script>
+<script src="./../common/common.js?v=1"></script>
+<script src="./../common/spot-controller.js?v=1"></script>
 <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAm4qIJng6fSNdzcVqepic_kdY8-zQuNto&callback=initMap" async defer></script>
 <script>
@@ -121,6 +136,10 @@ $("#spot-form").on("submit", function(event) {
   var data = RM.utils.serializeForm($(this));
   data.lat = parseFloat(data.lat);
   data.lng = parseFloat(data.lng);
+  data.minAge = parseFloat(data.minAge);
+  data.maxAge = parseFloat(data.maxAge);
+  data.male = data.male == "on";
+  data.female = data.female == "on";
   console.log(data);
   spotController.saveSpot(data, function(resp) {
     if (resp.is_valid) {
@@ -129,6 +148,10 @@ $("#spot-form").on("submit", function(event) {
       $("input[name=lat]").val("");
       $("input[name=lng]").val("");
       $("input[name=name]").val("");
+      $("input[name=male]").val(true);
+      $("input[name=female]").val(true);
+      $("input[name=minAge]").val(0);
+      $("input[name=maxAge]").val(100);
       $("textarea[name=description]").val("");
       RM.mapp.removeTempMarker();
       refreshList();
@@ -185,7 +208,11 @@ var loadSpot = function(spot) {
     $("input[name=address]").val(spot.address);
     $("input[name=lat]").val(spot.lat);
     $("input[name=lng]").val(spot.lng);
-    $("input[name=name]").val(spot.name);
+    $("input[name=name]").val(spot.name);  
+    $("input[name=male]").val(spot.male);
+    $("input[name=female]").val(spot.female);
+    $("input[name=minAge]").val(spot.minAge);
+    $("input[name=maxAge]").val(spot.maxAge);
     $("textarea[name=description]").val(spot.description);
     
     RM.mapp.placeTempMarker({

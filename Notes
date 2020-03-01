@@ -1,0 +1,3 @@
+# Connect to mongo through shell
+
+mongo ds215219.mlab.com:15219/heroku_98zb5w9j -u rifugimilano_adm -p rifugimilano_adm01

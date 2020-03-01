@@ -9,5 +9,4 @@ __mongo_client__ = pymongo.MongoClient(
 
 __mongo_db__ = __mongo_client__["heroku_98zb5w9j"]
 
-test_collection = __mongo_db__["test"]
 spot_collection = __mongo_db__["spot"]
