@@ -1,11 +1,26 @@
 $size: 100px;
 $border-radus: 10px;
 
+.btn-map {
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+    @include shadow();
+
+    .landing & {
+        right: -50%;
+    }
+}
+
 .types-container {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-top: 20px;
+    margin-top: 15vh;
+    
+    .landing & {
+        margin-top: 40vh;
+    }
 
     .type-card{
         cursor: pointer;
@@ -45,28 +60,66 @@ $border-radus: 10px;
     }
 }
 
+@mixin hide {
+    display: none;
+}
+
+@mixin show {
+    display: block;
+}
+
+.home-fixed {
+    position: fixed;
+    background-color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 90%;
+    top: 0;
+    left: 0;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
 .home-card {
     @include card();
-    height: 20vh;
+    display: flex;
+    align-items: center;
     overflow: hidden;
     transition: all 2s ease-in-out;
     -moz-transition: all 2s ease-in-out;
     -webkit-transition: all 2s ease-in-out;
-    position: fixed;
-    top: 10px;
-    background-color: white;
+
+    .search {
+        @include show();
+    }
+
+    .welcome-text {
+        @include hide();
+    }
+
+    .landing & {
+        height: 20vh;
+
+        .search {
+            @include hide();
+        }
+
+        .welcome-text {
+            @include show();
+        }
+    }
 }
 
 .spot-card {
     .spot-img {
-        height: 100px;
+        height: 200px;
         border-radius: 5px;
         background-color: $light-grey;
         text-align: center;
 
         .placeholder-icon {
-            margin-top: 30px;
-            font-size: 40px;
+            margin-top: 75px;
+            font-size: 50px;
             color: $medium-grey;
         }
     }

@@ -96,7 +96,7 @@ p {
     padding-right: 5%;
 }
 
-$button-color: $color4;
+$button-color: $color1;
 $button-text-color: white;
 
 .text-color1 {
@@ -143,6 +143,11 @@ $button-text-color: white;
     &:focus {
         outline: none;
     }
+}
+
+.btn-round {
+    width: auto;
+    border-radius: 50%;
 }
 
 .collapsed {

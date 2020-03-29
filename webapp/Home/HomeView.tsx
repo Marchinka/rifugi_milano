@@ -104,28 +104,41 @@ export class HomeView extends React.Component<Props, State> {
     }
 
     render() {
-        return (<div>
-            <div className="home-header">
-                <div className={"home-card"}>
-                    <InputSearch    className={this.isLandingPage() ? "collapsed" : ""}
-                                    name="searchText" 
-                                    label="" 
-                                    model={this.state} 
-                                    onChange={(e) => this.onInputChange(e)} />
-                    <p className={this.isLandingPage() ? "" : "collapsed"}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </div>
-                <div className="types-container">
-                    {StaticData.types().map(type => {
-                        return (<div key={type} className={"type-card " + this.getCardClass(type)} onClick={() => this.toggleType(type)}>
-                            <div className="icon"><i className={"fa-4x " + this.getTypeIcon(type)}></i></div>
-                            <div className="legend uppercase">{type}</div>
-                        </div>);
-                    }, this)}
+        return (<div className={this.isLandingPage() ? "landing": ""}>
+            <button className="btn btn-round btn-map">
+                <i className="fas fa-map-marker-alt fa-2x"></i>
+            </button>
+            <div className="home-fixed">
+                <div className="home-header">
+                    <div className={"home-card"}>
+                        <div className="search">
+                            <InputSearch
+                                name="searchText" 
+                                label="" 
+                                model={this.state} 
+                                onChange={(e) => this.onInputChange(e)} />
+                        </div>
+                        <div className="welcome-text">
+                            <h1 className="text-color1 uppercase">App Barboni</h1>
+                            <p>
+                                Una scritta di qualche tipo che dica due cose sull'app e li inviti a selezionare quello che gli interessa.
+                            </p>
+                            <p>
+                                Magari un link all'associazione?
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className={this.isLandingPage() ? "collapsed" : ""}>
+            <div className="types-container">
+                        {StaticData.types().map(type => {
+                            return (<div key={type} className={"type-card " + this.getCardClass(type)} onClick={() => this.toggleType(type)}>
+                                <div className="icon"><i className={"fa-4x " + this.getTypeIcon(type)}></i></div>
+                                <div className="legend uppercase">{type}</div>
+                            </div>);
+                        }, this)}
+                    </div>
+            <div className="spot-list">
                 {(this.getFilteredSpots() || []).map(spot => {
                     return (<div key={spot._id} className="spot-card">
                         <div className="spot-img">
