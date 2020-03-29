@@ -1,0 +1,59 @@
+#editor {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.ql-font {
+  .ql-picker-label {
+    text-transform: capitalize;
+  }
+  .ql-picker-item {
+    text-transform: capitalize;
+  }
+}
+
+// HELVETICA FONT
+.ql-font span[data-value="helvetica"]::before, .ql-font span[data-label="Helvetica"]::before {
+  font-family: Helvetica, Arial, sans-serif;
+
+}
+.ql-font-helvetica { font-family: Helvetica, Arial, sans-serif; }
+
+// Verdana FONT
+.ql-font span[data-value="verdana"]::before, .ql-font span[data-label="Verdana"]::before {
+  font-family: 'Verdana';
+
+}
+.ql-font-verdana { font-family: 'Verdana' }
+
+// TIMES FONT
+.ql-font span[data-value="times"]::before, .ql-font span[data-label="Times"]::before {
+  font-family: 'Times New Roman';
+
+}
+.ql-font-times { font-family: 'Times New Roman' }
+
+// ARIAL FONT
+.ql-font span[data-value="arial"]::before, .ql-font span[data-label="Arial"]::before {
+  font-family: 'Arial Black';
+
+}
+.ql-font-arial { font-family: 'Arial Black' }
+
+// GEORGIA FONT
+.ql-font span[data-value="georgia"]::before, .ql-font span[data-label="Georgia"]::before {
+  font-family: 'Georgia';
+
+}
+.ql-font-georgia { font-family: 'Georgia' }
+
+// IMPACT FONT
+.ql-font span[data-value="impact"]::before, .ql-font span[data-label="Impact"]::before {
+  font-family: "Impact";
+}
+.ql-font-impact { font-family: 'Impact'; }
+
+// COURIER FONT
+.ql-font span[data-value="courier"]::before, .ql-font span[data-label="Courier"]::before {
+  font-family: "Courier";
+}
+.ql-font-courier { font-family: 'Courier'; }

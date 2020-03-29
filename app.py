@@ -10,11 +10,14 @@ app = Flask(__name__)
 script_dir = os.path.dirname(__file__)  # absolute dir the script is in
 
 spot_collection = mongo_db_context.spot_collection;
+@app.route('/')
+def send_index():
+    return app.send_static_file('./index.html')
 
 @app.route('/')
 @app.route('/home')
 @app.route('/home/')
-def send_index():
+def send_home():
     return app.send_static_file('./home/index.html')
 
 @app.route('/add')
