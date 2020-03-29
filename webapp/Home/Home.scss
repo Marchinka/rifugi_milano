@@ -1,0 +1,89 @@
+$size: 100px;
+$border-radus: 10px;
+
+.types-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 20px;
+
+    .type-card{
+        cursor: pointer;
+        width: 140px;
+        display: inline-block;
+        @include shadow();
+        margin-bottom: 20px;
+        border-radius: $border-radus;
+
+        &.selected {
+            .icon {
+                color: $color1;
+            }
+
+            .legend {
+                color: $color1;
+            }
+        }
+    
+        .icon {
+            text-align: center;
+            padding: 10px 10px 10px 10px;
+            height: 70%;
+            color: $medium-grey;
+            border-top-left-radius: $border-radus;
+            border-top-right-radius: $border-radus;
+        }
+    
+        .legend {
+            text-align: center;
+            padding: 10px 10px 10px 10px;
+            height: 30%;
+            border-bottom-left-radius: $border-radus;
+            border-bottom-right-radius: $border-radus;
+            color: $medium-grey;
+        }
+    }
+}
+
+.home-card {
+    @include card();
+    height: 20vh;
+    overflow: hidden;
+    transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out;
+    position: fixed;
+    top: 10px;
+    background-color: white;
+}
+
+.spot-card {
+    .spot-img {
+        height: 100px;
+        border-radius: 5px;
+        background-color: $light-grey;
+        text-align: center;
+
+        .placeholder-icon {
+            margin-top: 30px;
+            font-size: 40px;
+            color: $medium-grey;
+        }
+    }
+
+    .spot-legend {
+        margin-top: 5px;
+        margin-bottom: 20px;
+
+        .address {
+            display: block;
+            color: $dark-grey;
+            margin-bottom: 5px;
+        }
+
+        .name {
+            display: block;
+            font-size: 16px;
+        }
+    }
+}

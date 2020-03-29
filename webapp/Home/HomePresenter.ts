@@ -5,8 +5,11 @@ import UserUtility from "../Common/UserUtility";
 
 export class HomePresenter extends BasePresenter<HomeView, HomeModel> {
     loadHome() {
-        throw new Error("Method not implemented.");
+        this.dao.send({
+            url: "/spots",
+            method: "GET"
+        }, (response) => {
+            this.view.loadSpots(response.data);
+        });
     }
-    
-    
 }

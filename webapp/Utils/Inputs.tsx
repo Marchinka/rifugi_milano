@@ -188,6 +188,64 @@ export class InputText extends React.Component<InputTextProps> {
     }
 }
 
+export class InputSearch extends React.Component<InputTextProps> {
+    id: number;
+
+    constructor(props: any) {
+        super(props);
+        this.id = Math.random() * 10000;
+    }
+
+    componentDidMount() {
+    }
+    
+    onChange(e: any): void {
+        let value = e.target.value;
+        let inputChange = {
+            field: this.props.name,
+            value: value,
+            isUserChange: true
+        } as InputChange;
+        this.props.onChange(inputChange);
+    }
+
+    getValue() : any {
+        let value = this.props.model[this.props.name];
+        if (value == undefined || value == null) {
+            return "";
+        }
+        return value;
+    }
+
+    private getInputId(): string {
+        return this.props.name + "_" + this.id;
+    }
+
+    getFieldClass() {
+        if (this.props.error) {
+            return "invalid";
+        } else {
+            return "";
+        }
+    }
+
+    render() {
+        return (<div className={"field-container input-search" + this.getFieldClass() + " " + this.props.className}>
+                <label htmlFor={this.getInputId()}>{this.props.label}</label>
+                <i className="search-icon fas fa-search"></i>
+                <input 
+                    autoComplete="off"
+                    disabled={this.props.disabled}
+                    type={this.props.isPassword ? "password" : "text"}
+                    id={this.getInputId()} 
+                    name={this.props.name} 
+                    value={this.getValue()}
+                    onChange={e => this.onChange(e)}
+                />
+                <span className="message">{this.props.error}</span>
+            </div>);
+    }
+}
 
 export class SquareInputColor extends React.Component<InputProps> {
     id: number;

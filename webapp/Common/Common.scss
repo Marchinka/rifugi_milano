@@ -1,15 +1,33 @@
 @mixin title-font {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 @mixin text-font {
-    font-family: 'Cardo', serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 @mixin divify {
     display: block;
     color: inherit; 
     text-decoration: inherit; 
+}
+
+@mixin shadow {
+    -webkit-box-shadow: 0px 10px 24px 3px $medium-grey;
+    -moz-box-shadow: 0px 10px 24px 3px $medium-grey;
+    box-shadow: 0px 10px 24px 3px $medium-grey;
+
+    &:hover {
+        -webkit-box-shadow: 0px 10px 24px 3px $dark-grey;
+        -moz-box-shadow: 0px 10px 24px 3px $dark-grey;
+        box-shadow: 0px 10px 24px 3px $dark-grey;
+    }
+}
+
+@mixin card {
+    border-radius: 10px;
+    padding: 20px 20px 20px 20px;
+    @include shadow();
 }
 
 @mixin ellipses {
@@ -69,6 +87,10 @@ p {
     text-transform: capitalize;
 }
 
+.uppercase {
+    text-transform: uppercase;
+}
+
 .app-content {
     padding-left: 5%;
     padding-right: 5%;
@@ -121,4 +143,9 @@ $button-text-color: white;
     &:focus {
         outline: none;
     }
+}
+
+.collapsed {
+    height: 0px!important;
+    overflow: hidden;
 }
