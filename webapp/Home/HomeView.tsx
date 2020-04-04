@@ -132,7 +132,7 @@ export class HomeView extends React.Component<Props, State> {
                                 onChange={(e) => this.onInputChange(e)} />
                         </div>
                         <div className="welcome-text">
-                            <h1 className="text-color1 uppercase">App Barboni</h1>
+                            <h1 className="text-main uppercase">App Barboni</h1>
                             <p>
                                 Una scritta di qualche tipo che dica due cose sull'app e li inviti a selezionare quello che gli interessa.
                             </p>
