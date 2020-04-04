@@ -7,6 +7,12 @@ import { HomeMode } from "../Common/AppRoutes";
 const FILTERS_LC_KEY = "FILTERS_LC_KEY";
 
 export class HomePresenter extends BasePresenter<HomeView, HomeModel> {
+    hideMap() {
+        this.view.hideMap();
+    }
+    showMap() {
+        this.view.showMap();
+    }
     setMode(mode: HomeMode) {
         this.view.setMode(mode);
     }
@@ -39,12 +45,13 @@ export class HomePresenter extends BasePresenter<HomeView, HomeModel> {
         return true;
     }
 
-    loadHome() {
+    loadHome(callback: () => void) {
         this.dao.send({
             url: "/spots",
             method: "GET"
         }, (response) => {
             this.view.loadSpots(response.data);
+            callback();
         });
     }
 }

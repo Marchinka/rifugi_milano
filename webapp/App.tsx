@@ -18,7 +18,7 @@ const homePresenter = new HomePresenter();
 class App extends React.Component<{}> {
     render() {
         return (<Layout>
-            <RouteWrapper<RouteId> route={new HomeRoute("list")}>
+            <RouteWrapper<RouteId> route={new HomeRoute("list", "closed")}>
                 <HomeView presenter={homePresenter} />
             </RouteWrapper>
 
@@ -36,17 +36,24 @@ class App extends React.Component<{}> {
 ReactDOM.render(<App />, document.getElementById("app-body"));
 
 const magellan = Magellan.get();
-magellan.setDefault(new HomeRoute("list"));
+magellan.setDefault(new HomeRoute("list", "closed"));
 magellan.onRouteId("Home", () => {
     let route = magellan.getCurrentRoute<HomeRoute>();
-    homePresenter.loadHome();
-    let hasFilters = homePresenter.hasFilters();
+    homePresenter.loadHome(() => {
+        let hasFilters = homePresenter.hasFilters();
 
-    if (route.mode == "list" && !hasFilters) {
-        magellan.goTo(new HomeRoute("landing"));
-    } else {
-        homePresenter.setMode(route.mode);
-    }
+        if (route.mode == "list" && !hasFilters) {
+            magellan.goTo(new HomeRoute("landing", "closed"));
+        } else {
+            homePresenter.setMode(route.mode);
+        }
+    
+        if (route.mapMode == "open") {
+            homePresenter.showMap();
+        } else {
+            homePresenter.hideMap();
+        }
+    });
 });
 magellan.onRouteId("Spot", () => {
     let route = magellan.getCurrentRoute<SpotRoute>();

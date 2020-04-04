@@ -95,9 +95,9 @@ export class HomeView extends React.Component<Props, HomeState> {
     saveFiltersInLc() {
         let isLanding = this.state.selectedTypes.length == 0;
         if (isLanding) {
-            Magellan.get().goTo(new HomeRoute("landing"));
+            Magellan.get().goTo(new HomeRoute("landing", "closed"));
         } else {
-            Magellan.get().goTo(new HomeRoute("list"));
+            Magellan.get().goTo(new HomeRoute("list", "closed"));
         }
         this.props.presenter.saveFiltersInLc(this.state);
     }
@@ -172,11 +172,19 @@ export class HomeView extends React.Component<Props, HomeState> {
         return this.state.showMap ? "show-map" : "";
     }
 
+    goToShowMap() {
+        Magellan.get().goTo(new HomeRoute("list", "open"));
+    }
+
     showMap() {
         this.getFilteredSpots().map(spot => {
             this.map.addMarker(spot);
         });
         this.setState({ showMap: true, displaySpot: null });
+    }
+
+    goToHideMap() {
+        Magellan.get().goTo(new HomeRoute("list", "closed"));
     }
 
     hideMap() {
@@ -193,7 +201,7 @@ export class HomeView extends React.Component<Props, HomeState> {
     render() {
         return (<div className={this.isLandingPage() ? "landing": ""}>
             <div className={"map-container " + this.getMapContainerClass()}>
-                <button className="btn btn-round btn-close-map" type="button" onClick={() => this.hideMap()}>
+                <button className="btn btn-round btn-close-map" type="button" onClick={() => this.goToHideMap()}>
                     <i className="fas fa-times fa-2x"></i>
                 </button>
                 <div id="home-map" className="map-div"></div>
@@ -207,7 +215,7 @@ export class HomeView extends React.Component<Props, HomeState> {
                         </div>
                 </Link>}
             </div>
-            <button className="btn btn-round btn-map" type="button" onClick={() => this.showMap()}>
+            <button className="btn btn-round btn-map" type="button" onClick={() => this.goToShowMap()}>
                 <i className="fas fa-map-marker-alt fa-2x"></i>
             </button>
             <div className="home-fixed">

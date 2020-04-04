@@ -3,12 +3,17 @@ import { RouteId } from "../Utils/Magellan";
 export type HomeMode =
   | 'landing' | 'list';
 
+export type MapMode =
+    | 'open' | 'closed';
+
 export class HomeRoute extends RouteId {
     mode: HomeMode;
+    mapMode: MapMode;
 
-    constructor(mode: HomeMode) {
+    constructor(mode: HomeMode, mapMode: MapMode) {
         super("Home");
         this.mode = mode;
+        this.mapMode = mapMode;
     }
 }
 
