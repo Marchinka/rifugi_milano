@@ -25,4 +25,5 @@ export interface HomeState extends HomeModel {
     searchText: string;
     age: string;
     mode: HomeMode;
+    showMap: boolean;
 }

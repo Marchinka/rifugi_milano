@@ -17,6 +17,7 @@ export class HomeView extends React.Component<Props, HomeState> {
     constructor(props: any){
         super(props);
         this.state = { 
+            showMap: false,
             spots: [],
             selectedTypes: [], 
             selectedGenders: [], 
@@ -150,9 +151,27 @@ export class HomeView extends React.Component<Props, HomeState> {
         });
     }
 
+    getMapContainerClass() {
+        return this.state.showMap ? "show-map" : "";
+    }
+
+    showMap() {
+        this.setState({ showMap: true });
+    }
+
+    hideMap() {
+        this.setState({ showMap: false });
+    }
+
     render() {
         return (<div className={this.isLandingPage() ? "landing": ""}>
-            <button className="btn btn-round btn-map">
+            <div className={"map-container " + this.getMapContainerClass()}>
+                <button className="btn btn-round btn-close-map" type="button" onClick={() => this.hideMap()}>
+                    <i className="fas fa-times fa-2x"></i>
+                </button>
+                <div id="home-map" className="map-div"></div>
+            </div>
+            <button className="btn btn-round btn-map" type="button" onClick={() => this.showMap()}>
                 <i className="fas fa-map-marker-alt fa-2x"></i>
             </button>
             <div className="home-fixed">

@@ -2,9 +2,10 @@ $size: 100px;
 $border-radus: 10px;
 
 .btn-map {
-    position: fixed;
+    position: absolute;
     bottom: 5%;
     right: 5%;
+    z-index: 200;
     @include shadow();
 
     .landing & {
@@ -12,6 +13,39 @@ $border-radus: 10px;
     }
 }
 
+.btn-close-map {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    z-index: 1000;
+    @include shadow();
+
+    .landing & {
+        right: -50%;
+    }
+}
+.map-container {
+    z-index: 500;
+    top: -100vh;
+    left: 0;
+    opacity: 0;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background-color: $app-background-color;
+
+    &.show-map {
+        opacity: 1;
+        top: 0;
+        left: 0;
+        display: block;
+    }
+
+    .map-div {
+        height: 100vh;
+        width: 100vw;
+    }
+}
 @mixin base-input-card() {
     border:  $card_border-color 1px solid;
     background-color: $card-background-color;
