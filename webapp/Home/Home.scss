@@ -35,7 +35,7 @@ $border-radus: 10px;
 
         &.selected {
             .legend {
-                color: $color1;
+                color: $app-main-color;
             }
         }
     
@@ -70,11 +70,11 @@ $border-radus: 10px;
 
         &.selected {
             .icon {
-                color: $color1;
+                color: $app-main-color;
             }
 
             .legend {
-                color: $color1;
+                color: $app-main-color;
             }
         }
     
