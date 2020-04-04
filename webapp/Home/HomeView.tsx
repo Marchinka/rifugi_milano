@@ -102,7 +102,7 @@ export class HomeView extends React.Component<Props, State> {
 
             let containsText = (spot.name.toLowerCase().match(this.state.searchText.toLowerCase()) || []).length > 0;
 
-            if (isTypeSelected && containsText && this.state.mode == "list") {
+            if (isTypeSelected && containsText) {
                 return true;
             } else {
                 return false;
@@ -150,7 +150,23 @@ export class HomeView extends React.Component<Props, State> {
                                 <div className="legend uppercase">{type}</div>
                             </div>);
                         }, this)}
-                    </div>
+            </div>
+            <div className="genders-container">
+                        {StaticData.genders().map(type => {
+                            return (<div key={type} className={"type-card " + this.getCardClass(type)} onClick={() => this.toggleType(type)}>
+                                <div className="legend uppercase">{type}</div>
+                            </div>);
+                        }, this)}
+            </div>
+            <div className={"age-card"}>
+                        <div className="search">
+                            <InputSearch
+                                name="searchText" 
+                                label="" 
+                                model={this.state} 
+                                onChange={(e) => this.onInputChange(e)} />
+                        </div>
+            </div>
             <div className="spot-list">
                 {(this.getFilteredSpots() || []).map(spot => {
                     return (<div key={spot._id} className="spot-card">

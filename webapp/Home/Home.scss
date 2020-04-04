@@ -1,6 +1,5 @@
 $size: 100px;
 $border-radus: 10px;
-$card_border-color: $light-grey;
 
 .btn-map {
     position: fixed;
@@ -12,7 +11,44 @@ $card_border-color: $light-grey;
         right: -50%;
     }
 }
+.genders-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 
+    .landing & {
+        margin-top: 50vh;
+    }
+
+
+    .field-container input {
+        background-color: $card-background-color;
+    }
+    .type-card {
+        background-color: $card-background-color;
+        border:  $card_border-color 1px solid;
+        cursor: pointer;
+        width: 140px;
+        display: inline-block;
+        margin-bottom: 20px;
+        border-radius: $border-radus;
+
+        &.selected {
+            .legend {
+                color: $color1;
+            }
+        }
+    
+        .legend {
+            text-align: center;
+            padding: 10px 10px 10px 10px;
+            height: 30%;
+            border-bottom-left-radius: $border-radus;
+            border-bottom-right-radius: $border-radus;
+            color: $medium-grey;
+        }
+    }
+}
 .types-container {
     display: flex;
     justify-content: space-between;
@@ -93,6 +129,10 @@ $card_border-color: $light-grey;
     -moz-transition: all 2s ease-in-out;
     -webkit-transition: all 2s ease-in-out;
 
+    .field-container input {
+        background-color: $card-background-color;
+    }
+
     .search {
         @include show();
     }
@@ -112,6 +152,20 @@ $card_border-color: $light-grey;
             @include show();
         }
     }
+}
+
+
+.age-card {
+    border:  $card_border-color 1px solid;
+    background-color: $card-background-color;
+    @include card();
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out;
+    margin-bottom: 20px;
 }
 
 .spot-card {
