@@ -209,11 +209,11 @@ var loadSpot = function(spot) {
     $("input[name=lat]").val(spot.lat);
     $("input[name=lng]").val(spot.lng);
     $("input[name=name]").val(spot.name);  
-    $("input[name=male]").val(spot.male);
-    $("input[name=female]").val(spot.female);
     $("input[name=minAge]").val(spot.minAge);
     $("input[name=maxAge]").val(spot.maxAge);
     $("textarea[name=description]").val(spot.description);
+    $("input[name=male]").prop('checked', spot.male);
+    $("input[name=female]").prop('checked', spot.female);
     
     RM.mapp.placeTempMarker({
       lat: spot.lat, lng: spot.lng

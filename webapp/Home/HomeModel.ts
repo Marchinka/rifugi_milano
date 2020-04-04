@@ -23,5 +23,6 @@ export interface HomeState extends HomeModel {
     selectedTypes: string[];
     selectedGenders: string[];
     searchText: string;
+    age: string;
     mode: HomeMode;
 }

@@ -17,9 +17,11 @@ export class HomePresenter extends BasePresenter<HomeView, HomeModel> {
         if (!filters.selectedGenders) filters.selectedGenders = [];
         return filters;
     }
-    saveFiltersInLc(selectedTypes: string[]) {
+    saveFiltersInLc(state: HomeState) {
         let filters = {
-            selectedTypes: selectedTypes
+            selectedGenders: state.selectedGenders,
+            age: state.age,
+            selectedTypes: state.selectedTypes
         };
         let json = JSON.stringify(filters);
         localStorage.setItem(FILTERS_LC_KEY, json);

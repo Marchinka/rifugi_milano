@@ -21,6 +21,7 @@ export class HomeView extends React.Component<Props, HomeState> {
             selectedTypes: [], 
             selectedGenders: [], 
             searchText: "", 
+            age: "",
             mode: "list" 
         };
     }
@@ -80,7 +81,7 @@ export class HomeView extends React.Component<Props, HomeState> {
         } else {
             Magellan.get().goTo(new HomeRoute("list"));
         }
-        this.props.presenter.saveFiltersInLc(this.state.selectedTypes);
+        this.props.presenter.saveFiltersInLc(this.state);
     }
 
     getTypeCardClass(type: string) {
@@ -113,9 +114,27 @@ export class HomeView extends React.Component<Props, HomeState> {
         return this.state.spots.filter(spot => {
             let isTypeSelected = this.state.selectedTypes.indexOf(spot.type) >= 0;
 
+            let isCorrectGender = true;
+            if (this.state.selectedGenders.length > 0) {
+                let isMale = this.state.selectedGenders.indexOf("Maschio") >= 0;
+                let isFemale = this.state.selectedGenders.indexOf("Femmina") >= 0;
+                if (spot.male && isMale) {
+                    isCorrectGender = true;
+                } else if (spot.female && isFemale) {
+                    isCorrectGender = true;
+                } else {
+                    isCorrectGender = false;
+                }
+            }
             let containsText = (spot.name.toLowerCase().match(this.state.searchText.toLowerCase()) || []).length > 0;
+            let age = parseFloat(this.state.age);
+            
+            let hasCorrectAge = true;
+            if (age) {
+                hasCorrectAge = spot.minAge <= age && age <= spot.maxAge;
+            }
 
-            if (isTypeSelected && containsText) {
+            if (isTypeSelected && isCorrectGender && containsText && hasCorrectAge) {
                 return true;
             } else {
                 return false;
@@ -124,8 +143,10 @@ export class HomeView extends React.Component<Props, HomeState> {
     }
 
     onInputChange(e: InputChange): void {
-        this.setState({
-            searchText: e.value
+        let state = this.state as any;
+        state[e.field] = e.value;
+        this.setState(state, () => {
+            this.saveFiltersInLc();
         });
     }
 
@@ -173,7 +194,7 @@ export class HomeView extends React.Component<Props, HomeState> {
             </div>
             <div className={"age-card"}>
                             <InputText
-                                name="searchText" 
+                                name="age" 
                                 label="Età" 
                                 model={this.state} 
                                 onChange={(e) => this.onInputChange(e)} />
