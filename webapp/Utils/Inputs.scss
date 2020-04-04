@@ -2,13 +2,31 @@ $search-font-size: 16px;
 
 .input-search {
   .search-icon {
-    margin-right: 10px;
+    margin-right: 15px;
     font-size: $search-font-size;
     color: $app-main-color;
   }
+}
+.input-text {
+  label {
+    margin-right: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $app-main-color;
+  }
+}
+
+.field-container {
+  width: 100%;
   input[type=text] {
     outline: none;
     border: none;
+    width: 85%;
     font-size: $search-font-size;
+    border-bottom: $medium-grey 1px solid;
+
+    &:focus {
+      border-bottom: $app-main-color 1px solid;
+    }
   }
 }

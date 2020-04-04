@@ -172,7 +172,7 @@ export class InputText extends React.Component<InputTextProps> {
     }
 
     render() {
-        return (<div className={"field-container " + this.getFieldClass() + " " + this.props.className}>
+        return (<div className={"field-container input-text " + this.getFieldClass() + " " + this.props.className}>
                 <label htmlFor={this.getInputId()}>{this.props.label}</label>
                 <input 
                     autoComplete="off"

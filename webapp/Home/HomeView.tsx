@@ -1,8 +1,8 @@
 import React = require("react");
 import { HomePresenter } from "./HomePresenter";
-import { HomeModel, Spot } from "./HomeModel";
+import { HomeModel, Spot, HomeState } from "./HomeModel";
 import { StaticData } from "../Common/StaticData";
-import { InputSearch, InputChange } from "../Utils/Inputs";
+import { InputSearch, InputChange, InputText } from "../Utils/Inputs";
 import { Magellan } from "../Utils/Magellan";
 import { HomeRoute, HomeMode } from "../Common/AppRoutes";
 
@@ -10,20 +10,19 @@ interface Props {
     presenter: HomePresenter;
 }
 
-export interface State extends HomeModel {
-    selectedTypes: string[];
-    searchText: string;
-    mode: HomeMode;
-}
-
-
-export class HomeView extends React.Component<Props, State> {
+export class HomeView extends React.Component<Props, HomeState> {
     setMode(mode: HomeMode) {
         this.setState({ mode: mode});
     }
     constructor(props: any){
         super(props);
-        this.state = { spots: [], selectedTypes: [], searchText: "", mode: "list" };
+        this.state = { 
+            spots: [],
+            selectedTypes: [], 
+            selectedGenders: [], 
+            searchText: "", 
+            mode: "list" 
+        };
     }
 
     componentDidMount() {
@@ -47,15 +46,7 @@ export class HomeView extends React.Component<Props, State> {
             return "";
         }
     }
-
-    resetFilters() {
-        this.setState({ 
-            spots: [], 
-            selectedTypes: [], 
-            searchText: "" 
-        });
-    }
-
+    
     toggleType(type: string): void {
         let hasType = this.state.selectedTypes.indexOf(type) >= 0;
         if (hasType) {
@@ -65,6 +56,19 @@ export class HomeView extends React.Component<Props, State> {
         } else {
             this.setState({
                 selectedTypes: [ type ]
+            }, () => this.saveFiltersInLc());
+        }
+    }
+
+    toggleGender(gender: string): void {
+        let hasGender = this.state.selectedGenders.indexOf(gender) >= 0;
+        if (hasGender) {
+            this.setState({
+                selectedGenders: []
+            }, () => this.saveFiltersInLc());
+        } else {
+            this.setState({
+                selectedGenders: [ gender ]
             }, () => this.saveFiltersInLc());
         }
     }
@@ -79,8 +83,17 @@ export class HomeView extends React.Component<Props, State> {
         this.props.presenter.saveFiltersInLc(this.state.selectedTypes);
     }
 
-    getCardClass(type: string) {
+    getTypeCardClass(type: string) {
         let hasType = this.state.selectedTypes.indexOf(type) >= 0;
+        if (hasType && this.state.mode == "list") {
+            return "selected";
+        } else {
+            return "";
+        }
+    }
+
+    getGenderCardClass(gender: string) {
+        let hasType = this.state.selectedGenders.indexOf(gender) >= 0;
         if (hasType && this.state.mode == "list") {
             return "selected";
         } else {
@@ -124,7 +137,7 @@ export class HomeView extends React.Component<Props, State> {
             <div className="home-fixed">
                 <div className="home-header">
                     <div className={"home-card"}>
-                        <div className="search">
+                        <div className="search w-100">
                             <InputSearch
                                 name="searchText" 
                                 label="" 
@@ -144,28 +157,26 @@ export class HomeView extends React.Component<Props, State> {
                 </div>
             </div>
             <div className="types-container">
-                        {StaticData.types().map(type => {
-                            return (<div key={type} className={"type-card " + this.getCardClass(type)} onClick={() => this.toggleType(type)}>
-                                <div className="icon"><i className={"fa-4x " + this.getTypeIcon(type)}></i></div>
-                                <div className="legend uppercase">{type}</div>
-                            </div>);
-                        }, this)}
+                {StaticData.types().map(type => {
+                    return (<div key={type} className={"type-card " + this.getTypeCardClass(type)} onClick={() => this.toggleType(type)}>
+                        <div className="icon"><i className={"fa-4x " + this.getTypeIcon(type)}></i></div>
+                        <div className="legend uppercase">{type}</div>
+                    </div>);
+                }, this)}
             </div>
             <div className="genders-container">
-                        {StaticData.genders().map(type => {
-                            return (<div key={type} className={"type-card " + this.getCardClass(type)} onClick={() => this.toggleType(type)}>
-                                <div className="legend uppercase">{type}</div>
-                            </div>);
-                        }, this)}
+                {StaticData.genders().map(gender => {
+                    return (<div key={gender} className={"type-card " + this.getGenderCardClass(gender)} onClick={() => this.toggleGender(gender)}>
+                        <div className="legend uppercase">{gender}</div>
+                    </div>);
+                }, this)}
             </div>
             <div className={"age-card"}>
-                        <div className="search">
-                            <InputSearch
+                            <InputText
                                 name="searchText" 
-                                label="" 
+                                label="Età" 
                                 model={this.state} 
                                 onChange={(e) => this.onInputChange(e)} />
-                        </div>
             </div>
             <div className="spot-list">
                 {(this.getFilteredSpots() || []).map(spot => {

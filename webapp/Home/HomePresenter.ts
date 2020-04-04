@@ -1,5 +1,5 @@
 import { HomeView } from "./HomeView";
-import { HomeModel } from "./HomeModel";
+import { HomeModel, HomeState } from "./HomeModel";
 import { BasePresenter } from "../Common/BaseMVP";
 import UserUtility from "../Common/UserUtility";
 import { HomeMode } from "../Common/AppRoutes";
@@ -10,9 +10,11 @@ export class HomePresenter extends BasePresenter<HomeView, HomeModel> {
     setMode(mode: HomeMode) {
         this.view.setMode(mode);
     }
-    getLcFilters() : any {
+    getLcFilters() : HomeState {
         let json = localStorage.getItem(FILTERS_LC_KEY);
-        let filters = JSON.parse(json);
+        let filters = JSON.parse(json) as HomeState;
+        if (!filters.selectedTypes) filters.selectedTypes = [];
+        if (!filters.selectedGenders) filters.selectedGenders = [];
         return filters;
     }
     saveFiltersInLc(selectedTypes: string[]) {
@@ -33,10 +35,6 @@ export class HomePresenter extends BasePresenter<HomeView, HomeModel> {
         }
 
         return true;
-    }
-
-    resetFilters() {
-        this.view.resetFilters();
     }
 
     loadHome() {

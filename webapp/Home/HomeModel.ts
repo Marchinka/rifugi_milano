@@ -1,3 +1,5 @@
+import { HomeMode } from "../Common/AppRoutes";
+
 export interface HomeModel {
     spots: Spot[];
 }
@@ -14,4 +16,12 @@ export interface Spot {
     lng: number;
     minAge: number;
     maxAge: number;
+}
+
+
+export interface HomeState extends HomeModel {
+    selectedTypes: string[];
+    selectedGenders: string[];
+    searchText: string;
+    mode: HomeMode;
 }
