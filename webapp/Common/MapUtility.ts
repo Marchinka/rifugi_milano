@@ -28,6 +28,7 @@ export class AppMap {
     private map : any;
     private geocoder : any;
     private clickEvents : ((event: any) => void)[] = [];
+    private spotClickEvents : ((spot: Spot) => void)[] = [];
     private tempMarker : any;
     private markers :any[] = [];
 
@@ -54,6 +55,10 @@ export class AppMap {
         });
     }
     
+    onSpotClick(func: (spot: Spot) => void) {
+        this.spotClickEvents.push(func);
+    }
+
     onClick(func: (event: any) => void) {
         this.clickEvents.push(func);
     }
@@ -69,6 +74,7 @@ export class AppMap {
     }
 
     addMarker(spot: Spot) {
+        let self = this;
         let contentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
@@ -91,7 +97,10 @@ export class AppMap {
         });
         
         marker.addListener('click', function() {
-            infowindow.open(this.map, marker);
+            //infowindow.open(this.map, marker);
+            self.spotClickEvents.forEach(func => {
+                func(spot);
+            })
         });
         this.markers.push(marker);
     }

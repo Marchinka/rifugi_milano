@@ -1,0 +1,59 @@
+.full-spot {
+    .spot-img {
+        height: 200px;
+        width: 120%;
+        border-radius: 5px;
+        background-color: $medium-grey;
+        border: $medium-grey solid 1px;
+        text-align: center;
+        border-radius: 0;
+        margin-right: -10%;
+        margin-left: -10%;
+        margin-bottom: 20px;
+
+        .placeholder-icon {
+            margin-top: 65px;
+            font-size: 60px;
+            color: white;
+        }
+    }
+
+    .type {
+        color: $dark-grey;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .badge {
+        color: white;
+        background-color: $app-main-color;
+        display: inline-block;
+        padding: 5px 5px 5px 5px;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
+
+    .name {
+        color: $app-main-color;
+        font-size: 32px;
+        line-height: 34px;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    .address {
+        color: $dark-grey;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .age {
+        color: $dark-grey;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .description {
+
+    }
+}

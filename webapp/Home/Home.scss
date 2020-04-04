@@ -46,6 +46,56 @@ $border-radus: 10px;
         width: 100vw;
     }
 }
+
+.display-spot {
+    z-index: 600;
+    @include divify();
+    position: fixed;
+    bottom: 3%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $card-background-color;
+    @include shadow();
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: $border-radus;
+
+    .spot-img {
+        height: 100px;    
+        width: 200px;
+        border-radius: 5px;
+        background-color: $card-background-color;
+        text-align: center;
+        background-color: $light-grey;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-right: 20px;
+
+        .placeholder-icon {
+            margin-top: 35px;
+            font-size: 30px;
+            color: $medium-grey;
+        }
+    }
+
+    .spot-legend {
+        margin-top: 5px;
+        margin-bottom: 20px;
+
+        .address {
+            display: block;
+            color: $dark-grey;
+            margin-bottom: 5px;
+        }
+
+        .name {
+            display: block;
+            font-size: 16px;
+        }
+    }
+}
+
 @mixin base-input-card() {
     border:  $card_border-color 1px solid;
     background-color: $card-background-color;
@@ -187,7 +237,7 @@ $border-radus: 10px;
 }
 
 .spot-card {
-    
+    @include divify();
     .spot-img {
         height: 200px;
         border-radius: 5px;

@@ -11,3 +11,12 @@ export class HomeRoute extends RouteId {
         this.mode = mode;
     }
 }
+
+export class SpotRoute extends RouteId {
+  id: string;
+
+    constructor(id: string) {
+        super("Spot");
+        this.id = id;
+    }
+}

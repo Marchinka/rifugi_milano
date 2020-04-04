@@ -4,8 +4,9 @@ import { HomeModel, Spot, HomeState } from "./HomeModel";
 import { StaticData } from "../Common/StaticData";
 import { InputSearch, InputChange, InputText } from "../Utils/Inputs";
 import { Magellan } from "../Utils/Magellan";
-import { HomeRoute, HomeMode } from "../Common/AppRoutes";
+import { HomeRoute, HomeMode, SpotRoute } from "../Common/AppRoutes";
 import { AppMap } from "../Common/MapUtility";
+import { Link } from "../Utils/Navigation";
 
 interface Props {
     presenter: HomePresenter;
@@ -22,7 +23,8 @@ export class HomeView extends React.Component<Props, HomeState> {
             selectedGenders: [], 
             searchText: "", 
             age: "",
-            mode: "list" 
+            mode: "list",
+            displaySpot: null
         };
         this.map = new AppMap();
     }
@@ -38,6 +40,9 @@ export class HomeView extends React.Component<Props, HomeState> {
             fullscreenControl: false,
             mapTypeControl: false,
             streetViewControl: false
+        });
+        this.map.onSpotClick(spot => {
+            this.showSpotOnMap(spot);
         });
     }
 
@@ -171,12 +176,18 @@ export class HomeView extends React.Component<Props, HomeState> {
         this.getFilteredSpots().map(spot => {
             this.map.addMarker(spot);
         });
-        this.setState({ showMap: true });
+        this.setState({ showMap: true, displaySpot: null });
     }
 
     hideMap() {
-        this.setState({ showMap: false });
+        this.setState({ showMap: false, displaySpot: null });
         this.map.clear();
+    }
+
+    showSpotOnMap(spot: Spot) {
+        this.setState({
+            displaySpot: spot
+        });
     }
 
     render() {
@@ -186,6 +197,15 @@ export class HomeView extends React.Component<Props, HomeState> {
                     <i className="fas fa-times fa-2x"></i>
                 </button>
                 <div id="home-map" className="map-div"></div>
+                {this.state.displaySpot != null && <Link className="display-spot" route={new SpotRoute(this.state.displaySpot._id)}>
+                        <div className="spot-img">
+                            <i className="placeholder-icon fas fa-camera-retro"></i>
+                        </div>
+                        <div className="spot-legend">
+                            <span className="address">{this.state.displaySpot.address}</span>
+                            <span className="name">{this.state.displaySpot.name}</span>
+                        </div>
+                </Link>}
             </div>
             <button className="btn btn-round btn-map" type="button" onClick={() => this.showMap()}>
                 <i className="fas fa-map-marker-alt fa-2x"></i>
@@ -236,7 +256,7 @@ export class HomeView extends React.Component<Props, HomeState> {
             </div>
             <div className="spot-list">
                 {(this.getFilteredSpots() || []).map(spot => {
-                    return (<div key={spot._id} className="spot-card">
+                    return (<Link key={spot._id} className="spot-card" route={new SpotRoute(spot._id)}>
                         <div className="spot-img">
                             <i className="placeholder-icon fas fa-camera-retro"></i>
                         </div>
@@ -244,7 +264,7 @@ export class HomeView extends React.Component<Props, HomeState> {
                             <span className="address">{spot.address}</span>
                             <span className="name">{spot.name}</span>
                         </div>
-                    </div>);
+                    </Link>);
                 }, this)}
             </div>
         </div>)
