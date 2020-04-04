@@ -3,6 +3,8 @@ import { HomePresenter } from "./HomePresenter";
 import { HomeModel, Spot } from "./HomeModel";
 import { StaticData } from "../Common/StaticData";
 import { InputSearch, InputChange } from "../Utils/Inputs";
+import { Magellan } from "../Utils/Magellan";
+import { HomeRoute, HomeMode } from "../Common/AppRoutes";
 
 interface Props {
     presenter: HomePresenter;
@@ -11,20 +13,22 @@ interface Props {
 export interface State extends HomeModel {
     selectedTypes: string[];
     searchText: string;
+    mode: HomeMode;
 }
 
-const FILTERS_LC_KEY = "FILTERS_LC_KEY";
 
 export class HomeView extends React.Component<Props, State> {
+    setMode(mode: HomeMode) {
+        this.setState({ mode: mode});
+    }
     constructor(props: any){
         super(props);
-        this.state = { spots: [], selectedTypes: [], searchText: "" };
+        this.state = { spots: [], selectedTypes: [], searchText: "", mode: "list" };
     }
 
     componentDidMount() {
         this.props.presenter.initialize(this);
-        let json = localStorage.getItem(FILTERS_LC_KEY);
-        let filters = JSON.parse(json);
+        let filters = this.props.presenter.getLcFilters();
         this.setState(filters);
     }
     
@@ -44,6 +48,14 @@ export class HomeView extends React.Component<Props, State> {
         }
     }
 
+    resetFilters() {
+        this.setState({ 
+            spots: [], 
+            selectedTypes: [], 
+            searchText: "" 
+        });
+    }
+
     toggleType(type: string): void {
         let hasType = this.state.selectedTypes.indexOf(type) >= 0;
         if (hasType) {
@@ -58,16 +70,18 @@ export class HomeView extends React.Component<Props, State> {
     }
 
     saveFiltersInLc() {
-        let filters = {
-            selectedTypes: this.state.selectedTypes
-        };
-        let json = JSON.stringify(filters);
-        localStorage.setItem(FILTERS_LC_KEY, json);
+        let isLanding = this.state.selectedTypes.length == 0;
+        if (isLanding) {
+            Magellan.get().goTo(new HomeRoute("landing"));
+        } else {
+            Magellan.get().goTo(new HomeRoute("list"));
+        }
+        this.props.presenter.saveFiltersInLc(this.state.selectedTypes);
     }
 
     getCardClass(type: string) {
         let hasType = this.state.selectedTypes.indexOf(type) >= 0;
-        if (hasType) {
+        if (hasType && this.state.mode == "list") {
             return "selected";
         } else {
             return "";
@@ -75,7 +89,7 @@ export class HomeView extends React.Component<Props, State> {
     }
 
     isLandingPage() {
-        if ((this.state.selectedTypes || []).length == 0) {
+        if (this.state.mode == "landing") {
             return true;
         } else {
             return false;
@@ -88,7 +102,7 @@ export class HomeView extends React.Component<Props, State> {
 
             let containsText = (spot.name.toLowerCase().match(this.state.searchText.toLowerCase()) || []).length > 0;
 
-            if (isTypeSelected && containsText) {
+            if (isTypeSelected && containsText && this.state.mode == "list") {
                 return true;
             } else {
                 return false;
