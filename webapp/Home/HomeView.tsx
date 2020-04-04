@@ -48,12 +48,11 @@ export class HomeView extends React.Component<Props, State> {
         let hasType = this.state.selectedTypes.indexOf(type) >= 0;
         if (hasType) {
             this.setState({
-                selectedTypes: this.state.selectedTypes.filter((t) => t != type)
+                selectedTypes: []
             }, () => this.saveFiltersInLc());
         } else {
-            this.state.selectedTypes.push(type);
             this.setState({
-                selectedTypes: this.state.selectedTypes
+                selectedTypes: [ type ]
             }, () => this.saveFiltersInLc());
         }
     }

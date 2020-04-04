@@ -1,5 +1,6 @@
 $size: 100px;
 $border-radus: 10px;
+$card_border-color: $light-grey;
 
 .btn-map {
     position: fixed;
@@ -22,11 +23,12 @@ $border-radus: 10px;
         margin-top: 40vh;
     }
 
-    .type-card{
+    .type-card {
+        background-color: $card-background-color;
+        border:  $card_border-color 1px solid;
         cursor: pointer;
         width: 140px;
         display: inline-block;
-        @include shadow();
         margin-bottom: 20px;
         border-radius: $border-radus;
 
@@ -69,8 +71,8 @@ $border-radus: 10px;
 }
 
 .home-fixed {
+    background-color: $app-background-color;;
     position: fixed;
-    background-color: white;
     padding-top: 10px;
     padding-bottom: 10px;
     width: 90%;
@@ -81,6 +83,8 @@ $border-radus: 10px;
 }
 
 .home-card {
+    border:  $card_border-color 1px solid;
+    background-color: $card-background-color;
     @include card();
     display: flex;
     align-items: center;
@@ -111,10 +115,11 @@ $border-radus: 10px;
 }
 
 .spot-card {
+    
     .spot-img {
         height: 200px;
         border-radius: 5px;
-        background-color: $light-grey;
+        background-color: $card-background-color;;
         text-align: center;
 
         .placeholder-icon {
