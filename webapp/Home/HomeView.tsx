@@ -213,13 +213,13 @@ export class HomeView extends React.Component<Props, HomeState> {
             <div className="home-fixed">
                 <div className="home-header">
                     <div className={"home-card"}>
-                        <div className="search w-100">
+                        <form className="search w-100" onSubmit={e => e.preventDefault()}>
                             <InputSearch
                                 name="searchText" 
                                 label="" 
                                 model={this.state} 
                                 onChange={(e) => this.onInputChange(e)} />
-                        </div>
+                        </form>
                         <div className="welcome-text">
                             <h1 className="text-main uppercase">App Barboni</h1>
                             <p>
@@ -247,13 +247,13 @@ export class HomeView extends React.Component<Props, HomeState> {
                     </div>);
                 }, this)}
             </div>
-            <div className={"age-card"}>
+            <form className={"age-card"} onSubmit={e => e.preventDefault()}>
                             <InputText
                                 name="age" 
                                 label="Età" 
                                 model={this.state} 
                                 onChange={(e) => this.onInputChange(e)} />
-            </div>
+            </form>
             <div className="spot-list">
                 {(this.getFilteredSpots() || []).map(spot => {
                     return (<Link key={spot._id} className="spot-card" route={new SpotRoute(spot._id)}>
