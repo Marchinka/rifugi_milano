@@ -2,7 +2,7 @@ $size: 100px;
 $border-radus: 10px;
 
 .btn-map {
-    position: absolute;
+    position: fixed;
     bottom: 5%;
     right: 5%;
     z-index: 200;
@@ -14,7 +14,7 @@ $border-radus: 10px;
 }
 
 .btn-close-map {
-    position: fixed;
+    position: absolute;
     top: 5%;
     left: 5%;
     z-index: 1000;

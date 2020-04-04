@@ -12,8 +12,13 @@
 <body>
   <div id="app-body"></div>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <!--<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAm4qIJng6fSNdzcVqepic_kdY8-zQuNto&callback=initMap" async defer></script>-->
+  <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAm4qIJng6fSNdzcVqepic_kdY8-zQuNto"></script>
+  <script>
+    var initMap = function() {
+      console.log("init google maps");
+    };
+  </script>
   <script src="./js/App-bundle.js?v=1"></script>
 </body>
 </html>

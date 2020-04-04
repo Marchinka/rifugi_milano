@@ -5,15 +5,14 @@ import { StaticData } from "../Common/StaticData";
 import { InputSearch, InputChange, InputText } from "../Utils/Inputs";
 import { Magellan } from "../Utils/Magellan";
 import { HomeRoute, HomeMode } from "../Common/AppRoutes";
+import { AppMap } from "../Common/MapUtility";
 
 interface Props {
     presenter: HomePresenter;
 }
 
 export class HomeView extends React.Component<Props, HomeState> {
-    setMode(mode: HomeMode) {
-        this.setState({ mode: mode});
-    }
+    map: AppMap;
     constructor(props: any){
         super(props);
         this.state = { 
@@ -25,12 +24,25 @@ export class HomeView extends React.Component<Props, HomeState> {
             age: "",
             mode: "list" 
         };
+        this.map = new AppMap();
     }
 
     componentDidMount() {
         this.props.presenter.initialize(this);
         let filters = this.props.presenter.getLcFilters();
         this.setState(filters);
+        this.map.init({
+            mapId: "home-map",
+            center: { lat: 45.4696420266612, lng: 9.18695905771667 },
+            zoom: 11,
+            fullscreenControl: false,
+            mapTypeControl: false,
+            streetViewControl: false
+        });
+    }
+
+    setMode(mode: HomeMode) {
+        this.setState({ mode: mode});
     }
     
     loadSpots(spots: Spot[]) {
@@ -156,11 +168,15 @@ export class HomeView extends React.Component<Props, HomeState> {
     }
 
     showMap() {
+        this.getFilteredSpots().map(spot => {
+            this.map.addMarker(spot);
+        });
         this.setState({ showMap: true });
     }
 
     hideMap() {
         this.setState({ showMap: false });
+        this.map.clear();
     }
 
     render() {

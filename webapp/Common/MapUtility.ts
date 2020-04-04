@@ -1,131 +1,16 @@
 import { Spot } from "../Home/HomeModel";
 
-declare var google : any;
+declare var window : any;
 
-let map : any;
-let geocoder : any;
-let clickEvents : any[] = [];
-let tempMarker : any;
-let markers :any[] = [];
-
-var initMap = function () {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 45.469, lng: 9.154},
-        zoom: 11
-    });
-    geocoder = new google.maps.Geocoder();
-
-    // var locations = [
-    //     {lat: 45.469, lng: 9.154}
-    // ];
-
-    // var markers = locations.map(function(location, i) {
-    //     return new google.maps.Marker({
-    //         position: location
-    //     });
-    // });
-
-    // var markerCluster = new MarkerClusterer(
-    //     map, 
-    //     markers,  
-    //     { 
-    //         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-    //     });   
-
-    google.maps.event.addListener(map, 'click', function(event: any) {
-        clickEvents.forEach(function (f) {
-            f(event);
-        });
-    });
-}
-var onClick = function (f: any) {
-    clickEvents.push(f);
-};
-var placeTempMarker = function (location: any) {
-    if (tempMarker) {
-        tempMarker.setMap(null);
-    }
-    tempMarker = new google.maps.Marker({
-        position: location,
-        map: map
-    });
-};
-var addMarker = function(spot: any) {
-    var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">' + spot.name + '</h1>'+
-    '<p><strong>Address</strong>: ' + spot.address +'</p>'+
-    '<p><strong>Type</strong>: ' + spot.type +'</p>'+
-    '<div id="bodyContent">'+
-    '<p>' + spot.description +'</p>'+
-    '</div>'+
-    '</div>';
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
-    var marker = new google.maps.Marker({
-        map: map,
-        position: {
-            lat: spot.lat,
-            lng: spot.lng
-        }
-    });
-    
-    marker.addListener('click', function() {
-        infowindow.open(map, marker);
-    });
-    markers.push(marker);
-};
-var removeTempMarker = function () {
-    if (tempMarker) {
-        tempMarker.setMap(null);
-    }
-};
-var getAddressPosition = function (address: any, callback: any) {
-    geocoder.geocode({'address': address}, function (results: any, status: any) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
-                callback({
-                    hasResult: true,
-                    location: results[0].geometry.location
-                });
-
-            } else {
-                callback({
-                    hasResult: false
-                });
-            }
-        } else {
-            callback({
-                hasResult: false,
-                message: "Geocode was not successful for the following reason: " + status
-            });
-        }
-      });
-};
-var clear = function () {
-    markers.forEach(function(m) {
-        if (m) {
-            m.setMap(null);
-        }
-    });
-    markers = [];
-};
-// return {
-//     initMap: initMap,
-//     onClick: onClick,
-//     placeTempMarker: placeTempMarker,
-//     getAddressPosition: getAddressPosition,
-//     removeTempMarker: removeTempMarker,
-//     addMarker: addMarker,
-//     clear: clear
-// }
+var google = window.google as any;
 
 export interface MapOptions {
     mapId: string;
     center: Location;
     zoom: number;
+    fullscreenControl: boolean;
+    mapTypeControl: boolean;
+    streetViewControl: boolean;
 }
 
 export interface Location {
@@ -150,12 +35,19 @@ export class AppMap {
         const self = this;
         self.map = new google.maps.Map(document.getElementById(mapOptions.mapId), {
             center: mapOptions.center, //{lat: 45.469, lng: 9.154},
-            zoom: mapOptions.zoom //11
+            zoom: mapOptions.zoom, //11,
+            fullscreenControl: mapOptions.fullscreenControl,
+            mapTypeControl: mapOptions.mapTypeControl,
+            streetViewControl: mapOptions.streetViewControl
         });
         self.geocoder = new google.maps.Geocoder();
         self.tempMarker = null;
         self.markers = [];
-        google.maps.event.addListener(map, 'click', (event: any) => {
+        google.maps.event.addListener(self.map, 'click', (event: any) => {
+            console.log("click on map", {
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng()
+            });
             self.clickEvents.forEach((func: (event: any) => void) => {
                 func(event);
             });
@@ -172,7 +64,7 @@ export class AppMap {
         }
         this.tempMarker = new google.maps.Marker({
             position: location,
-            map: map
+            map: this.map
         });
     }
 
@@ -191,7 +83,7 @@ export class AppMap {
             content: contentString
         });
         var marker = new google.maps.Marker({
-            map: map,
+            map: this.map,
             position: {
                 lat: spot.lat,
                 lng: spot.lng
@@ -199,7 +91,7 @@ export class AppMap {
         });
         
         marker.addListener('click', function() {
-            infowindow.open(map, marker);
+            infowindow.open(this.map, marker);
         });
         this.markers.push(marker);
     }
@@ -211,7 +103,7 @@ export class AppMap {
     }
 
     getAddressPosition(address: string, callback: (e: GeocodeResponse) => void) {
-        geocoder.geocode({'address': address}, function (results: any, status: any) {
+        this.geocoder.geocode({'address': address}, function (results: any, status: any) {
             if (status == google.maps.GeocoderStatus.OK) {
                 if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
                     callback({
@@ -236,11 +128,11 @@ export class AppMap {
     }
 
     clear() {
-        markers.forEach(function(m) {
+        this.markers.forEach(function(m) {
             if (m) {
                 m.setMap(null);
             }
         });
-        markers = [];
+        this.markers = [];
     };
 }
