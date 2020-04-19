@@ -7,6 +7,7 @@ import { Magellan } from "../Utils/Magellan";
 import { HomeRoute, HomeMode, SpotRoute } from "../Common/AppRoutes";
 import { AppMap } from "../Common/MapUtility";
 import { Link } from "../Utils/Navigation";
+import Utils from "../Utils/Utils";
 
 interface Props {
     presenter: HomePresenter;
@@ -198,6 +199,16 @@ export class HomeView extends React.Component<Props, HomeState> {
         });
     }
 
+    isDormitorio(): boolean {
+        console.log(this.state.selectedTypes)
+        let hasType = this.state.selectedTypes.indexOf("Dormitorio") >= 0;
+        if (hasType) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     render() {
         return (<div className={this.isLandingPage() ? "landing": ""}>
             <div className={"map-container " + this.getMapContainerClass()}>
@@ -248,14 +259,14 @@ export class HomeView extends React.Component<Props, HomeState> {
                     </div>);
                 }, this)}
             </div>
-            <div className="genders-container">
+            <div className="genders-container" style={Utils.shoIf(this.isDormitorio())}>
                 {StaticData.genders().map(gender => {
                     return (<div key={gender} className={"type-card " + this.getGenderCardClass(gender)} onClick={() => this.toggleGender(gender)}>
                         <div className="legend uppercase">{gender}</div>
                     </div>);
                 }, this)}
             </div>
-            <form className={"age-card"} onSubmit={e => e.preventDefault()}>
+            <form className={"age-card"} onSubmit={e => e.preventDefault()} style={Utils.shoIf(this.isDormitorio())}>
                             <InputText
                                 name="age" 
                                 label="Età" 
